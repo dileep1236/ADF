@@ -1,0 +1,9 @@
+{
+	"name": "dil-sandbox-adf",
+	"location": "eastus",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "5330af19-bda0-4cc6-8cd2-fd83e267a184",
+		"tenantId": "d3523db7-f84a-4a24-a815-cd4ba4691c9c"
+	}
+}
