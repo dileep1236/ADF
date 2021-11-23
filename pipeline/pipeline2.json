@@ -27,12 +27,14 @@
 						}
 					},
 					"sink": {
-						"type": "ParquetSink",
+						"type": "DelimitedTextSink",
 						"storeSettings": {
 							"type": "AzureBlobFSWriteSettings"
 						},
 						"formatSettings": {
-							"type": "ParquetWriteSettings"
+							"type": "DelimitedTextWriteSettings",
+							"quoteAllText": true,
+							"fileExtension": ".txt"
 						}
 					},
 					"enableStaging": false,
@@ -46,9 +48,9 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "Film",
 									"type": "String",
-									"physicalType": "UTF8"
+									"physicalType": "UTF8",
+									"ordinal": 1
 								}
 							},
 							{
@@ -58,9 +60,9 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "Genre",
 									"type": "String",
-									"physicalType": "UTF8"
+									"physicalType": "UTF8",
+									"ordinal": 2
 								}
 							},
 							{
@@ -70,9 +72,9 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "Lead Studio",
 									"type": "String",
-									"physicalType": "UTF8"
+									"physicalType": "UTF8",
+									"ordinal": 3
 								}
 							},
 							{
@@ -82,9 +84,9 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "Audience score %",
 									"type": "String",
-									"physicalType": "UTF8"
+									"physicalType": "UTF8",
+									"ordinal": 4
 								}
 							},
 							{
@@ -94,9 +96,9 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "Profitability",
 									"type": "String",
-									"physicalType": "UTF8"
+									"physicalType": "UTF8",
+									"ordinal": 5
 								}
 							},
 							{
@@ -106,9 +108,9 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "Rotten Tomatoes %",
 									"type": "String",
-									"physicalType": "UTF8"
+									"physicalType": "UTF8",
+									"ordinal": 6
 								}
 							},
 							{
@@ -118,9 +120,9 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "Worldwide Gross",
 									"type": "String",
-									"physicalType": "UTF8"
+									"physicalType": "UTF8",
+									"ordinal": 7
 								}
 							},
 							{
@@ -130,9 +132,9 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "Year",
 									"type": "String",
-									"physicalType": "UTF8"
+									"physicalType": "UTF8",
+									"ordinal": 8
 								}
 							}
 						],
@@ -151,7 +153,7 @@
 				],
 				"outputs": [
 					{
-						"referenceName": "Parquet1",
+						"referenceName": "DelimitedText1",
 						"type": "DatasetReference"
 					}
 				]
