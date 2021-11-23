@@ -5,6 +5,10 @@
 		"type": "AzureSqlDW",
 		"typeProperties": {
 			"connectionString": "Integrated Security=False;Encrypt=True;Connection Timeout=30;Data Source=diltestwarehouse.sql.azuresynapse.net;Initial Catalog=sandoxwarehouse"
+		},
+		"connectVia": {
+			"referenceName": "integrationRuntime1",
+			"type": "IntegrationRuntimeReference"
 		}
 	}
 }
