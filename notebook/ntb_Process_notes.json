@@ -17,7 +17,7 @@
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "2",
 				"spark.dynamicAllocation.maxExecutors": "2",
-				"spark.autotune.trackingId": "722aec28-52df-4102-a44e-8ee3d4ae7d7e"
+				"spark.autotune.trackingId": "ea313cae-cfd3-4306-b9c7-96f9c767cee6"
 			}
 		},
 		"metadata": {
@@ -62,7 +62,7 @@
 					"## If header exists uncomment line below\r\n",
 					"##, header=True\r\n",
 					")\r\n",
-					"display(df.limit(10))"
+					"display(df.limit(10))           "
 				],
 				"execution_count": 2
 			}
