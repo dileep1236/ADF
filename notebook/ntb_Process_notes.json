@@ -17,7 +17,7 @@
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "2",
 				"spark.dynamicAllocation.maxExecutors": "2",
-				"spark.autotune.trackingId": "83818671-2832-4f51-9c5a-047a73b0301d"
+				"spark.autotune.trackingId": "351d0f9e-3a00-474e-8254-5e9d71aeac7b"
 			}
 		},
 		"metadata": {
@@ -100,9 +100,9 @@
 				"source": [
 					"from striprtf.striprtf import rtf_to_text\r\n",
 					"rtf = df.collect()[0][\"ValueString\"]\r\n",
-					"text = rtf_to_text(rtf)"
+					"text = rtf_to_text(rtf).replace('\\n','')"
 				],
-				"execution_count": 7
+				"execution_count": 13
 			},
 			{
 				"cell_type": "code",
@@ -121,7 +121,7 @@
 					"from pyspark.sql.functions import lit\r\n",
 					"df = df.withColumn(\"Note\",lit(text))"
 				],
-				"execution_count": 9
+				"execution_count": 14
 			},
 			{
 				"cell_type": "code",
@@ -158,7 +158,7 @@
 				"source": [
 					"display(df.collect()[0][\"Note\"])"
 				],
-				"execution_count": 12
+				"execution_count": 15
 			}
 		]
 	}
