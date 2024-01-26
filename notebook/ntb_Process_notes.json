@@ -17,7 +17,7 @@
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "2",
 				"spark.dynamicAllocation.maxExecutors": "2",
-				"spark.autotune.trackingId": "8e23bd8b-59b4-4fae-84ff-aa8b4afa1372"
+				"spark.autotune.trackingId": "83818671-2832-4f51-9c5a-047a73b0301d"
 			}
 		},
 		"metadata": {
@@ -60,11 +60,11 @@
 					"%%pyspark\r\n",
 					"df = spark.read.load('abfss://cdm@adffhirttocdmstorage.dfs.core.windows.net/data/LocalObservation/partition-data-Observation-949-1-336a32eb-5e59-40c0-9656-429816aec624.csv', format='csv'\r\n",
 					"## If header exists uncomment line below\r\n",
-					"##, header=True\r\n",
+					", header=True\r\n",
 					")\r\n",
 					"#display(df.limit(10))           "
 				],
-				"execution_count": null
+				"execution_count": 4
 			},
 			{
 				"cell_type": "code",
@@ -80,9 +80,85 @@
 					}
 				},
 				"source": [
-					"import striprtf;"
+					"pip install  striprtf"
 				],
-				"execution_count": 2
+				"execution_count": 6
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"from striprtf.striprtf import rtf_to_text\r\n",
+					"rtf = df.collect()[0][\"ValueString\"]\r\n",
+					"text = rtf_to_text(rtf)"
+				],
+				"execution_count": 7
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"from pyspark.sql.functions import lit\r\n",
+					"df = df.withColumn(\"Note\",lit(text))"
+				],
+				"execution_count": 9
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					},
+					"collapsed": false
+				},
+				"source": [
+					"display(df)"
+				],
+				"execution_count": 10
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"display(df.collect()[0][\"Note\"])"
+				],
+				"execution_count": 12
 			}
 		]
 	}
