@@ -1,0 +1,143 @@
+{
+	"name": "Copy data from Azure FHIR service to ADLS Gen2",
+	"properties": {
+		"description": "Copies FHIR resources of specified resource type, from source Azure FHIR service (Gen2) or Azure API for FHIR (Gen1) to destination Azure Data Lake Storage (ADLS) Gen2 or Azure Blob Storage account.",
+		"activities": [
+			{
+				"name": "Copy FHIR resources",
+				"description": "Copies FHIR resources of specified resource type, from source Azure FHIR service to destination Azure Data Lake Storage (ADLS) Gen2 or Azure Blob Storage account.",
+				"type": "Until",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"expression": {
+						"value": "@equals(activity('Read from Azure FHIR Service').output.pipelineReturnValue.link.relation, 'self')",
+						"type": "Expression"
+					},
+					"activities": [
+						{
+							"name": "Write to Azure Data Lake",
+							"description": "Writes FHIR resources to files in the specified Azure Data Lake Storage Gen2 account or Azure Blob Storage account.",
+							"type": "ExecutePipeline",
+							"dependsOn": [
+								{
+									"activity": "Read from Azure FHIR Service",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"pipeline": {
+									"referenceName": "Write data collection to ADLS Gen2 or Blob Storage",
+									"type": "PipelineReference"
+								},
+								"waitOnCompletion": true,
+								"parameters": {
+									"storageAccount": {
+										"value": "@pipeline().parameters.targetDataLake",
+										"type": "Expression"
+									},
+									"storageFolder": {
+										"value": "@concat(pipeline().parameters.targetDataLakeFolder, '/', pipeline().parameters.fhirResourceType)",
+										"type": "Expression"
+									},
+									"inputData": {
+										"value": "@activity('Read from Azure FHIR Service').output.pipelineReturnValue.resources",
+										"type": "Expression"
+									}
+								}
+							}
+						},
+						{
+							"name": "Set next link",
+							"type": "SetVariable",
+							"dependsOn": [
+								{
+									"activity": "Read from Azure FHIR Service",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "nextLink",
+								"value": {
+									"value": "@activity('Read from Azure FHIR Service').output.pipelineReturnValue.link.url",
+									"type": "Expression"
+								}
+							}
+						},
+						{
+							"name": "Read from Azure FHIR Service",
+							"description": "Reads FHIR resources of the specified FHIR resource type from the specified Azure FHIR Service (Gen2) or Azure API for FHIR (Gen1).",
+							"type": "ExecutePipeline",
+							"dependsOn": [],
+							"policy": {
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"pipeline": {
+									"referenceName": "Read from Azure FHIR Service",
+									"type": "PipelineReference"
+								},
+								"waitOnCompletion": true,
+								"parameters": {
+									"fhirService": {
+										"value": "@pipeline().parameters.sourceFhirService",
+										"type": "Expression"
+									},
+									"fhirResourceType": {
+										"value": "@pipeline().parameters.fhirResourceType",
+										"type": "Expression"
+									},
+									"inputUrl": {
+										"value": "@variables('nextLink')",
+										"type": "Expression"
+									}
+								}
+							}
+						}
+					],
+					"timeout": "0.12:00:00"
+				}
+			}
+		],
+		"parameters": {
+			"sourceFhirService": {
+				"type": "string"
+			},
+			"fhirResourceType": {
+				"type": "string"
+			},
+			"targetDataLake": {
+				"type": "string"
+			},
+			"targetDataLakeFolder": {
+				"type": "string"
+			}
+		},
+		"variables": {
+			"updatedFhirResource": {
+				"type": "String"
+			},
+			"nextLink": {
+				"type": "String"
+			}
+		},
+		"folder": {
+			"name": "Pipelines"
+		},
+		"annotations": []
+	}
+}
