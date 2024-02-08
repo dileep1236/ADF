@@ -1,0 +1,9 @@
+{
+	"name": "azuredf-dileep-poc-2",
+	"location": "eastus",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "7ee15eae-8814-4b66-8bd7-c6e3d4f3016c",
+		"tenantId": "893356d4-4390-4502-ae1c-cb5ef638f49e"
+	}
+}
